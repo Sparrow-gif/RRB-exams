@@ -1,0 +1,47 @@
+[
+  {
+    "topicId": "history",
+    "topicName": "Indian History",
+    "description": "Ancient, Medieval and Modern Indian History MCQs",
+    "questions": [
+      {
+        "id": 1,
+        "question": "1857 ki kranti ki shuruaat kahan se hui thi?",
+        "options": ["Delhi", "Meerut", "Kanpur", "Jhansi"],
+        "answer": 1
+      },
+      {
+        "id": 2,
+        "question": "Bharat ke pratham Rashtrapati kaun the?",
+        "options": ["Dr. Rajendra Prasad", "Mahatma Gandhi", "Jawaharlal Nehru", "Sardar Patel"],
+        "answer": 0
+      }
+    ]
+  },
+  {
+    "topicId": "polity",
+    "topicName": "Indian Polity",
+    "description": "Constitution, Fundamental Rights & Governance",
+    "questions": [
+      {
+        "id": 1,
+        "question": "Bhartiya Samvidhan kab lagu hua tha?",
+        "options": ["15 August 1947", "26 January 1950", "26 November 1949", "2 October 1952"],
+        "answer": 1
+      }
+    ]
+  },
+  {
+    "topicId": "geography",
+    "topicName": "Geography",
+    "description": "World and Indian Geography MCQs",
+    "questions": [
+      {
+        "id": 1,
+        "question": "Bharat ki sabse lambi nadi kaun si hai?",
+        "options": ["Yamuna", "Godavari", "Ganga", "Brahmaputra"],
+        "answer": 2
+      }
+    ]
+  }
+]
