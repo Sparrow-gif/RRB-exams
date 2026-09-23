@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrepMaster - Modern Quiz Platform</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts (Inter) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        /* Navbar & Header */
+        .navbar-custom {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            padding: 40px 0 60px 0;
+            border-radius: 0 0 30px 30px;
+            margin-bottom: -30px;
+        }
+
+        /* Modern Topic Cards */
+        .topic-card {
+            background: var(--card-bg);
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: #cbd5e1;
+        }
+
+        .topic-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary-color);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .topic-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Quiz Card Styling */
+        .quiz-card {
+            background: var(--card-bg);
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        /* Custom MCQ Option Buttons */
+        .option-btn {
+            background-color: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 14px 20px;
+            color: var(--text-main);
+            font-weight: 500;
+            text-align: left;
+            width: 100%;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background-color: #f1f5f9;
+            border-color: #cbd5e1;
+            transform: translateX(4px);
+        }
+
+        .option-btn.correct {
+            background-color: #ecfdf5 !important;
+            border-color: #10b981 !important;
+            color: #065f46 !important;
+        }
+
+        .option-btn.wrong {
+            background-color: #fef2f2 !important;
+            border-color: #ef4444 !important;
+            color: #991b1b !important;
+        }
+
+        /* Custom Progress Bar */
+        .progress-thin {
+            height: 6px;
+            border-radius: 10px;
+            background-color: #e2e8f0;
+        }
+
+        .progress-thin .progress-bar {
+            background-color: var(--primary-color);
+            border-radius: 10px;
+        }
+
+        .badge-soft {
+            background-color: #e0e7ff;
+            color: var(--primary-color);
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+
+        .btn-custom-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 10px;
+            padding: 10px 24px;
+            font-weight: 600;
+            border: none;
+            transition: background 0.2s;
+        }
+
+        .btn-custom-primary:hover {
+            background-color: var(--primary-hover);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Hero Section -->
+    <div class="hero-section">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h3 class="fw-bold m-0"><i class="bi bi-journal-check me-2"></i>PrepMaster</h3>
+                    <p class="m-0 text-white-50 small mt-1">Smart Competitive Exam Preparation Platform</p>
+                </div>
+                <span class="badge bg-white text-dark px-3 py-2 rounded-pill shadow-sm small fw-semibold">
+                    <i class="bi bi-lightning-charge-fill text-warning me-1"></i> Practice Mode
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container my-5 pt-3">
+        
+        <!-- SECTION 1: Topics List View -->
+        <div id="topics-view">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h4 class="fw-bold m-0">Select Topic</h4>
+                    <p class="text-muted small m-0">Apne exam preparation ke liye topic chunein</p>
+                </div>
+            </div>
+            
+            <div class="row g-4" id="topics-container">
+                <!-- JSON data se auto-cards generate honge -->
+            </div>
+        </div>
+
+        <!-- SECTION 2: Quiz View -->
+        <div id="quiz-view" class="d-none">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    
+                    <button class="btn btn-link text-decoration-none text-muted mb-3 p-0" onclick="showTopics()">
+                        <i class="bi bi-arrow-left me-1"></i> Back to Topics
+                    </button>
+                    
+                    <div class="card quiz-card p-4">
+                        <!-- Quiz Header -->
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="fw-bold m-0" id="quiz-topic-title">Topic Name</h5>
+                            <span class="badge badge-soft" id="question-tracker">Question 1/10</span>
+                        </div>
+
+                        <!-- Progress Bar -->
+                        <div class="progress progress-thin mb-4">
+                            <div id="quiz-progress" class="progress-bar" style="width: 0%"></div>
+                        </div>
+
+                        <!-- Question Text -->
+                        <h5 class="fw-semibold mb-4" id="question-text" style="line-height: 1.6;">Question goes here?</h5>
+
+                        <!-- Options List -->
+                        <div id="options-container" class="d-grid gap-3">
+                            <!-- MCQ Buttons dynamically add honge -->
+                        </div>
+
+                        <!-- Bottom Controls -->
+                        <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top">
+                            <div id="feedback" class="fw-semibold"></div>
+                            <button id="next-btn" class="btn btn-custom-primary d-none" onclick="nextQuestion()">
+                                Next Question <i class="bi bi-arrow-right ms-1"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: Score / Result View -->
+        <div id="result-view" class="d-none">
+            <div class="row justify-content-center">
+                <div class="col-md-6 text-center">
+                    <div class="card quiz-card p-5">
+                        <div class="mb-3">
+                            <i class="bi bi-trophy text-warning display-3"></i>
+                        </div>
+                        <h3 class="fw-bold mb-2">Quiz Completed!</h3>
+                        <p class="text-muted mb-4">Aapne topic achhe se finish kar liya hai.</p>
+                        
+                        <div class="bg-light p-4 rounded-4 mb-4">
+                            <div class="row">
+                                <div class="col-6 border-end">
+                                    <h2 class="fw-bold text-primary m-0" id="final-score">0</h2>
+                                    <span class="text-muted small">Score</span>
+                                </div>
+                                <div class="col-6">
+                                    <h2 class="fw-bold text-success m-0" id="final-percentage">0%</h2>
+                                    <span class="text-muted small">Accuracy</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-custom-primary w-100" onclick="showTopics()">
+                            <i class="bi bi-arrow-counterclockwise me-1"></i> Try Another Topic
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let allTopicsData = [];
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        // Fetch JSON Data on Page Load
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('questions.json')
+                .then(response => response.json())
+                .then(data => {
+                    allTopicsData = data;
+                    renderTopics(data);
+                })
+                .catch(error => {
+                    console.error('Error loading JSON:', error);
+                    document.getElementById('topics-container').innerHTML = 
+                        '<div class="col-12 text-center text-danger">JSON File Load karne me error aayi hai. Check karein ki file same folder me hai.</div>';
+                });
+        });
+
+        // 1. Render Topics as Cards
+        function renderTopics(topics) {
+            const container = document.getElementById('topics-container');
+            container.innerHTML = '';
+
+            topics.forEach(topic => {
+                const cardHTML = `
+                    <div class="col-md-4 col-sm-6">
+                        <div class="card topic-card p-4 h-100" onclick="startQuiz('${topic.topicId}')">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div class="p-2 bg-light rounded-3 text-primary">
+                                    <i class="bi bi-book fs-4"></i>
+                                </div>
+                                <span class="badge badge-soft">${topic.questions.length} Qs</span>
+                            </div>
+                            <h5 class="fw-bold text-dark mb-2">${topic.topicName}</h5>
+                            <p class="text-muted small mb-0">${topic.description}</p>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += cardHTML;
+            });
+        }
+
+        // Shuffle Array Helper Function (Randomise)
+        function shuffleArray(array) {
+            return array.sort(() => Math.random() - 0.5);
+        }
+
+        // 2. Start Quiz
+        function startQuiz(topicId) {
+            const selectedTopic = allTopicsData.find(t => t.topicId === topicId);
+            if (!selectedTopic || selectedTopic.questions.length === 0) {
+                alert('Is topic me abhi questions nahi hain!');
+                return;
+            }
+
+            document.getElementById('quiz-topic-title').innerText = selectedTopic.topicName;
+            
+            // Randomise Questions
+            currentQuestions = shuffleArray([...selectedTopic.questions]);
+            currentQuestionIndex = 0;
+            score = 0;
+
+            document.getElementById('topics-view').classList.add('d-none');
+            document.getElementById('result-view').classList.add('d-none');
+            document.getElementById('quiz-view').classList.remove('d-none');
+
+            loadQuestion();
+        }
+
+        // 3. Load Single Question
+        function loadQuestion() {
+            const q = currentQuestions[currentQuestionIndex];
+            const total = currentQuestions.length;
+            
+            // Update Tracker & Progress Bar
+            document.getElementById('question-tracker').innerText = `Question ${currentQuestionIndex + 1}/${total}`;
+            const progressPercent = ((currentQuestionIndex + 1) / total) * 100;
+            document.getElementById('quiz-progress').style.width = `${progressPercent}%`;
+
+            document.getElementById('question-text').innerText = q.question;
+            document.getElementById('feedback').innerText = '';
+            document.getElementById('next-btn').classList.add('d-none');
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerHTML = `<span>${opt}</span><i class="bi bi-circle icon-indicator"></i>`;
+                btn.onclick = () => checkAnswer(index, q.answer, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        // 4. Check Selected Answer
+        function checkAnswer(selectedIndex, correctIndex, selectedBtn) {
+            const allOptionBtns = document.querySelectorAll('.option-btn');
+            
+            // Disable all buttons once an option is selected
+            allOptionBtns.forEach(btn => btn.disabled = true);
+
+            if (selectedIndex === correctIndex) {
+                score++;
+                selectedBtn.classList.add('correct');
+                selectedBtn.querySelector('.icon-indicator').className = 'bi bi-check-circle-fill text-success';
+                document.getElementById('feedback').innerHTML = '<span class="text-success"><i class="bi bi-check-lg me-1"></i> Sahi Jawab!</span>';
+            } else {
+                selectedBtn.classList.add('wrong');
+                selectedBtn.querySelector('.icon-indicator').className = 'bi bi-x-circle-fill text-danger';
+                
+                // Highlight the correct option
+                allOptionBtns[correctIndex].classList.add('correct');
+                allOptionBtns[correctIndex].querySelector('.icon-indicator').className = 'bi bi-check-circle-fill text-success';
+                
+                document.getElementById('feedback').innerHTML = '<span class="text-danger"><i class="bi bi-x-lg me-1"></i> Galat Jawab!</span>';
+            }
+
+            document.getElementById('next-btn').classList.remove('d-none');
+        }
+
+        // 5. Next Question or Show Result
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < currentQuestions.length) {
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        // 6. Show Final Score Screen
+        function showResult() {
+            document.getElementById('quiz-view').classList.add('d-none');
+            document.getElementById('result-view').classList.remove('d-none');
+
+            const total = currentQuestions.length;
+            const percentage = Math.round((score / total) * 100);
+
+            document.getElementById('final-score').innerText = `${score}/${total}`;
+            document.getElementById('final-percentage').innerText = `${percentage}%`;
+        }
+
+        // 7. Back to Topics View
+        function showTopics() {
+            document.getElementById('quiz-view').classList.add('d-none');
+            document.getElementById('result-view').classList.add('d-none');
+            document.getElementById('topics-view').classList.remove('d-none');
+        }
+    </script>
+</body>
+</html>
